@@ -6,23 +6,6 @@ An interactive TouchDesigner project that uses **MediaPipe hand tracking** on a 
 
 https://github.com/user-attachments/assets/28ba6f54-6d4d-450b-bfb0-bda33673616b
 
-## Network Screenshots
-
-**1. Top-level signal flow** — webcam → MediaPipe → `hand_tracking` → `web_sim`
-![Top-level signal flow](Screenshot_2026-06-30_053204.png)
-
-**2. Full hand-tracking network** — inside `hand_tracking`: select/shuffle/merge/math/noise/flip chains for both hands
-![Hand tracking network](hand_trackin_web_project_images.png)
-
-**3. CHOP to TOP conversion** — `chopto1` / `chopto2` nodes used to pass landmark data as texture data
-![CHOP to TOP conversion](web_image_2.png)
-
-**4. Web simulation / proximity network** — inside `web_sim`: `sopto1`/`sopto2` → `merge3` → `proximity1`
-![Web simulation network](web_image_3.png)
-
-**5. Render network** — `cam1`, `constant1`, `geo1`, `render1`, `in2`, `comp1` (final composite)
-![Render network](web_image_4.png)
-
 ## Project File
 
 The full TouchDesigner project is included: [`handtrackingProject.toe`](handtrackingProject.toe)
@@ -44,6 +27,8 @@ MediaPipe (webcam in) → hand_tracking (COMP) → web_sim (COMP) → output
 - `hand_tracking` — a COMP containing the landmark-cleanup network (see below).
 - `web_sim` — a COMP containing the rendering/simulation network (see below).
 
+![Top-level signal flow](Screenshot_2026-06-30_053204.png)
+
 ### Inside `hand_tracking`
 Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 
@@ -60,10 +45,19 @@ Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 - **flip / flip1** mirror or invert the relevant axes before final output.
 - Outputs: `left_hand_final` and `right_hand_final` CHOPs, exported up to the parent COMP for use by `web_sim`.
 
+![Hand tracking network](hand_trackin_web_project_images.png)
+
+### Misc — CHOP to TOP conversion
+- `chopto1` / `chopto2` — convert CHOP data to TOP textures (likely used to visualize or pass landmark data as image data for further GPU-side processing, e.g., feeding shaders).
+
+![CHOP to TOP conversion](web_image_2.png)
+
 ### Inside `web_sim`
 - `sopto1` and `sopto2` — convert geometry (likely point clouds driven by the left/right hand CHOPs) into renderable SOPs.
 - `merge3` — combines both hand-driven SOP networks into a single geometry stream.
 - `proximity1` — computes proximity/distance relationships between points (e.g., web strands reacting based on how close a hand point is to a web node).
+
+![Web simulation network](web_image_3.png)
 
 ### Rendering Network (`render1` / `comp1` area)
 - `cam1` — scene camera.
@@ -73,8 +67,7 @@ Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 - `in2` — secondary input layer (e.g., background or UI layer).
 - `comp1` — final composite of `render1` and `in2`, producing the finished output image.
 
-### Misc
-- `chopto1` / `chopto2` — convert CHOP data to TOP textures (likely used to visualize or pass landmark data as image data for further GPU-side processing, e.g., feeding shaders).
+![Render network](web_image_4.png)
 
 ## Requirements
 - TouchDesigner (2022.x or later recommended)
@@ -86,9 +79,6 @@ Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 2. Ensure your webcam is selected as the Video In TOP source inside the `MediaPipe` component.
 3. Enable hand tracking and confirm `left_hand_final` / `right_hand_final` channels are updating in the `hand_tracking` COMP.
 4. View the composited output from `comp1` inside `web_sim` — the web/surface should visibly react as hands move in front of the camera.
-
-## Notes / Demo
-A reference video (`882634dd9c6a4261a17a1d03d4e4c808.MOV`) is included showing the project running live, demonstrating the web reacting to hand movement in real time.
 
 ## Possible Improvements
 - Add confidence-based smoothing/filtering before the `math` nodes to reduce jitter when tracking confidence is low.
