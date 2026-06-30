@@ -8,20 +8,20 @@ https://github.com/user-attachments/assets/28ba6f54-6d4d-450b-bfb0-bda33673616b
 
 ## Network Screenshots
 
-**Full hand-tracking network**
-![Hand tracking network](images/hand_trackin_web_project_images.png)
+**1. Top-level signal flow** — webcam → MediaPipe → `hand_tracking` → `web_sim`
+![Top-level signal flow](Screenshot_2026-06-30_053204.png)
 
-**Webcam → hand_tracking → web_sim signal flow**
-![Top-level signal flow](images/web_image_2.png)
+**2. Full hand-tracking network** — inside `hand_tracking`: select/shuffle/merge/math/noise/flip chains for both hands
+![Hand tracking network](hand_trackin_web_project_images.png)
 
-**Proximity / web simulation network**
-![Web simulation network](images/web_image_3.png)
+**3. CHOP to TOP conversion** — `chopto1` / `chopto2` nodes used to pass landmark data as texture data
+![CHOP to TOP conversion](web_image_2.png)
 
-**Render network (camera, geometry, composite)**
-![Render network](images/web_image_4.png)
+**4. Web simulation / proximity network** — inside `web_sim`: `sopto1`/`sopto2` → `merge3` → `proximity1`
+![Web simulation network](web_image_3.png)
 
-**hand_tracking COMP detail**
-![hand_tracking detail](images/Screenshot_2026-06-30_053204.png)
+**5. Render network** — `cam1`, `constant1`, `geo1`, `render1`, `in2`, `comp1` (final composite)
+![Render network](web_image_4.png)
 
 ## Project File
 
