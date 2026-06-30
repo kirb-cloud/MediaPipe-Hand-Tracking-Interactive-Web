@@ -2,6 +2,31 @@
 
 An interactive TouchDesigner project that uses **MediaPipe hand tracking** on a live webcam feed to drive a **simulated spider-web / proximity surface**, where the web reacts to the position and movement of the viewer's hands.
 
+## Demo
+
+https://github.com/user-attachments/assets/28ba6f54-6d4d-450b-bfb0-bda33673616b
+
+## Network Screenshots
+
+**Full hand-tracking network**
+![Hand tracking network](images/hand_trackin_web_project_images.png)
+
+**Webcam → hand_tracking → web_sim signal flow**
+![Top-level signal flow](images/web_image_2.png)
+
+**Proximity / web simulation network**
+![Web simulation network](images/web_image_3.png)
+
+**Render network (camera, geometry, composite)**
+![Render network](images/web_image_4.png)
+
+**hand_tracking COMP detail**
+![hand_tracking detail](images/Screenshot_2026-06-30_053204.png)
+
+## Project File
+
+The full TouchDesigner project is included: [`handtrackingProject.toe`](handtrackingProject.toe)
+
 ## Overview
 
 ```
@@ -63,7 +88,7 @@ Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 4. View the composited output from `comp1` inside `web_sim` — the web/surface should visibly react as hands move in front of the camera.
 
 ## Notes / Demo
-A reference video is included showing the project running live, demonstrating the web reacting to hand movement in real time.
+A reference video (`882634dd9c6a4261a17a1d03d4e4c808.MOV`) is included showing the project running live, demonstrating the web reacting to hand movement in real time.
 
 ## Possible Improvements
 - Add confidence-based smoothing/filtering before the `math` nodes to reduce jitter when tracking confidence is low.
