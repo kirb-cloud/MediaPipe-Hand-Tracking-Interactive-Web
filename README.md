@@ -27,7 +27,7 @@ MediaPipe (webcam in) → hand_tracking (COMP) → web_sim (COMP) → output
 - `hand_tracking` — a COMP containing the landmark-cleanup network (see below).
 - `web_sim` — a COMP containing the rendering/simulation network (see below).
 
-![Top-level signal flow](Screenshot_2026-06-30_053204.png)
+![Top-level signal flow](web%20image%206.png)
 
 ### Inside `hand_tracking`
 Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
@@ -45,19 +45,19 @@ Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 - **flip / flip1** mirror or invert the relevant axes before final output.
 - Outputs: `left_hand_final` and `right_hand_final` CHOPs, exported up to the parent COMP for use by `web_sim`.
 
-![Hand tracking network](hand_trackin_web_project_images.png)
+![Hand tracking network](hand%20trackin%20web%20project%20images.png)
 
 ### Misc — CHOP to TOP conversion
 - `chopto1` / `chopto2` — convert CHOP data to TOP textures (likely used to visualize or pass landmark data as image data for further GPU-side processing, e.g., feeding shaders).
 
-![CHOP to TOP conversion](web_image_2.png)
+![CHOP to TOP conversion](web%20image%202.png)
 
 ### Inside `web_sim`
 - `sopto1` and `sopto2` — convert geometry (likely point clouds driven by the left/right hand CHOPs) into renderable SOPs.
 - `merge3` — combines both hand-driven SOP networks into a single geometry stream.
 - `proximity1` — computes proximity/distance relationships between points (e.g., web strands reacting based on how close a hand point is to a web node).
 
-![Web simulation network](web_image_3.png)
+![Web simulation network](web%20image%203.png)
 
 ### Rendering Network (`render1` / `comp1` area)
 - `cam1` — scene camera.
@@ -67,7 +67,7 @@ Raw landmark data (`in1`) is split into two symmetric chains, one per hand:
 - `in2` — secondary input layer (e.g., background or UI layer).
 - `comp1` — final composite of `render1` and `in2`, producing the finished output image.
 
-![Render network](web_image_4.png)
+![Render network](web%20image%204.png)
 
 ## Requirements
 - TouchDesigner (2022.x or later recommended)
